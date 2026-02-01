@@ -1,4 +1,7 @@
 site_name: Bitbyzen
+site_name: Bitbyzen
+site_url: https://kuroraiun.github.io/my-mkdocs-site/
+
 copyright: © 2026 Bitbyzen. All rights reserved.
 
 theme:
