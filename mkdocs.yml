@@ -26,6 +26,9 @@ nav_en: &nav_en
     - memoQ:
       - Operations:
         - 01-apps/memoq/operations/update-address.md
+    - OpenAI:
+      - Operations:
+        - 01-apps/openai/operation/cancel-chatgpt.md
     - Windows:
       - Operations:
         - 01-apps/windows/operations/change-email.md
