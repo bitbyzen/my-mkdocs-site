@@ -1,6 +1,6 @@
 # Convert CRW to PNG
 
-1. Read the message.
+1. Read the **message**.
     ![Screenshot](images/convert-crw-to-png01.png) 
 
 1. Select **Install**.
