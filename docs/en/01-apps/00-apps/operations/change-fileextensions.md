@@ -2,4 +2,4 @@
 
 Use **Flexible Renamer**.
 
-![Screnshot](images/change-fileextensions01.png)
+![Screenshot](images/change-fileextensions01.png)
