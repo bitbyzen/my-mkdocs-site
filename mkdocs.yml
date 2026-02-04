@@ -20,12 +20,15 @@ theme:
 nav_en: &nav_en
   - Home: index.md
   - App Notes:
-    - Apps:
+    - Any apps:
       - Operations:
         - 01-apps/00-apps/operations/change-fileextensions.md
     - Blender:
       - Operations:
         - 01-apps/blender/operation/render-slideshow.md
+    - GIMP:
+      - Operations:
+        - 01-apps/gimp/operations/convert-crw-to-png.md
     - memoQ:
       - Operations:
         - 01-apps/memoq/operations/update-address.md
