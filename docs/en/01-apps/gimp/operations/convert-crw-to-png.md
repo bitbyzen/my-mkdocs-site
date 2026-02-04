@@ -1,4 +1,4 @@
-# Convert CRW to PNG
+# Convert CRW to JPG
 
 1. Read the message.
 
