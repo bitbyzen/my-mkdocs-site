@@ -1,220 +1,123 @@
+# Docker
 
-# Publish a MkDocs website on GitHub
+1. Build the static site using your container.
 
-You can publish it for free using GitHub Pages.  
-The workflow is:  
-MkDocs → builds static HTML → pushed to gh-pages → GitHub Pages hosts it.
+    ```
+    docker run --rm -it -v "$(pwd)":/mkdocs my-mkdocs mkdocs build
+    ```
+
+1. Commit your source (not site/) and push.
+
+    ```
+    git init
+    git add .
+    git commit -m "Add MkDocs site"
+    git branch -M main
+    git remote add origin https://github.com/<you>/<repo>.git
+    git push -u origin main
+    ```
+
+1. Deploy to GitHub Pages using GitHub Actions (recommended)
+
+    This avoids needing to run gh-deploy locally.
+
+    Create .github/workflows/deploy.yml:
+
+    ```
+    name: Deploy MkDocs to GitHub Pages
+
+    on:
+    push:
+        branches: [ "main" ]
+    workflow_dispatch:
+
+    permissions:
+    contents: read
+    pages: write
+    id-token: write
+
+    concurrency:
+    group: "pages"
+    cancel-in-progress: true
+
+    jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+        - uses: actions/checkout@v4
+
+        - name: Set up Python
+            uses: actions/setup-python@v5
+            with:
+            python-version: "3.x"
+
+        - name: Install MkDocs
+            run: |
+            pip install mkdocs mkdocs-material
+
+        - name: Build
+            run: mkdocs build
+
+        - name: Upload artifact
+            uses: actions/upload-pages-artifact@v3
+            with:
+            path: site
+
+    deploy:
+        environment:
+        name: github-pages
+        url: ${{ steps.deployment.outputs.page_url }}
+        runs-on: ubuntu-latest
+        needs: build
+        steps:
+        - name: Deploy to GitHub Pages
+            id: deployment
+            uses: actions/deploy-pages@v4
+    ```
+
+    !!! Note
+        If you don’t use mkdocs-material, remove it from the install line.
+
+1. Go to **Settings → Pages → Source = GitHub Actions**.
 
 
-2️⃣ Connect your project to GitHub
-Inside your project folder:
 
-```bash title="terminal"
-git init
-git add .
-git commit -m "Initial MkDocs site"
-git branch -M main
-git remote add origin https://github.com/yourusername/your-repo-name.git
-git push -u origin main
+1. Creat a GitHub account
+
+2. To create a repository:  
+go to **New repository**, then set:
+
+- **Repository name**: anything
+- **Public/Private**: Public (needed for free Pages hosting)
+- **Initialize with README**: leave unchecked
+- **Add .gitignore**: no
+- **License**: optional
+- **Owner**: use your accout name. You could probably create a new one if you want to use a different name in your website:  
+https://YOUR_USERNAME.github.io/REPO_NAME/
+
+
+3. To connect your local MkDocs project, in the project folder (the one with mkdocs.yml):
+
 ```
-
-3️⃣ Deploy to GitHub Pages
-
-MkDocs has built-in GitHub Pages deployment:
-
-```bash title="terminal"
-mkdocs gh-deploy
-```
-
-What this does:
-
-- Builds your site
-- Creates a gh-pages branch
-- Pushes static HTML to that branch
-- GitHub Pages serves it automatically
-
-4️⃣ Enable GitHub Pages (one-time)
-In your GitHub repo:
-
-Go to **Settings** > **Pages**.
-
-Set:
-
-- Source: Deploy from a branch
-- Branch: gh-pages / root
-
-Save.
-
-Your site will be live at:
-```
-https://yourusername.github.io/your-repo-name/
-```
-
-Update the website
-
-```bash title="terminal"
-git add .
-git commit -m "Update docs"
-git push
-mkdocs gh-deploy
-```
-
-Boom — updated site.
-
-
-With Docker you have two good options.
-
-Option A (simplest): build in Docker, deploy from your host
-Build the static site using your container
-
-docker run --rm -it -v "$(pwd)":/mkdocs my-mkdocs mkdocs build
-This creates site/ on your host (because of the volume mount).
-
-Commit your source (not site/) and push
-
-git init
-git add .
-git commit -m "Add MkDocs site"
-git branch -M main
-git remote add origin https://github.com/<you>/<repo>.git
-git push -u origin main
-Deploy to GitHub Pages using GitHub Actions (recommended)
-This avoids needing to run gh-deploy locally.
-
-Create .github/workflows/deploy.yml:
-
-name: Deploy MkDocs to GitHub Pages
-
-on:
-  push:
-    branches: [ "main" ]
-  workflow_dispatch:
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.x"
-
-      - name: Install MkDocs
-        run: |
-          pip install mkdocs mkdocs-material
-
-      - name: Build
-        run: mkdocs build
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: site
-
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-Then in your repo: Settings → Pages → Source = GitHub Actions.
-
-✅ Result: every push to main rebuilds + publishes automatically.
-
-Note: If you don’t use mkdocs-material, remove it from the install line.
-
-Option B: deploy from Docker with mkdocs gh-deploy
-This works too, but you need git + credentials inside the container.
-
-1) Run gh-deploy using a GitHub token
-Create a fine-scoped token on GitHub (classic works; fine-grained is better) with repo write access, then run:
-
-docker run --rm -it \
-  -v "$(pwd)":/mkdocs \
-  -e GITHUB_TOKEN=YOUR_TOKEN \
-  my-mkdocs sh -lc '
-    git config --global user.email "you@example.com"
-    git config --global user.name "Your Name"
-    git remote set-url origin https://x-access-token:$GITHUB_TOKEN@github.com/<you>/<repo>.git
-    mkdocs gh-deploy --force
-  '
-Then set GitHub Pages to serve from branch gh-pages.
-
-⚠️ This is more fiddly and it’s easy to accidentally leak tokens in shell history, so Actions is usually cleaner.
-
-Quick check: your current Docker command
-Your current command:
-
-docker run --rm -it -p 8000:8000 -v $(pwd):/mkdocs my-mkdocs
-That’s probably running mkdocs serve inside the container (preview). Great for local dev, but not publishing yet.
-
-The only thing I need from you to give exact steps
-Which route do you want?
-
-GitHub Actions auto-deploy (best long-term), or
-
-gh-deploy from Docker?
-
-And do you use any plugins/themes (like mkdocs-material) in your Docker image?
-
-
-You said:
-I have created the GitHub account. What should I do next? Create a new repo?
-
-ChatGPT said:
-Yesss, you’re right on track 😄 — next step = create a repository on GitHub.
-
-After that, we hook your MkDocs project to it and set up auto-deploy.
-
-🧭 Step 1 — Create the repository
-Go to GitHub and:
-
-Top right → + → New repository
-
-Fill in:
-
-Field	What to choose
-Repository name	anything (e.g. docs, my-mkdocs-site)
-Public/Private	Public (needed for free Pages hosting)
-Initialize with README	❌ leave unchecked
-Add .gitignore	❌
-License	optional
-Click Create repository.
-
-🧱 Step 2 — Connect your local MkDocs project
-In your MkDocs project folder (the one with mkdocs.yml):
-
 git init
 git add .
 git commit -m "Initial MkDocs site"
 git branch -M main
 git remote add origin https://github.com/YOUR_USERNAME/REPO_NAME.git
 git push -u origin main
-Now your project lives on GitHub 🎉
+```
 
-⚙️ Step 3 — Set up automatic publishing (best way)
+4. To set up automatic publishing,
 We’ll let GitHub build and publish the site every time you push.
 
 Create this file in your project:
 
+```
 .github/workflows/deploy.yml
-Paste this inside:
+```
 
+
+```
 name: Deploy MkDocs
 
 on:
@@ -244,102 +147,61 @@ jobs:
           path: site
 
       - uses: actions/deploy-pages@v4
-Commit & push it:
+```
 
+Run:
+
+```
 git add .
 git commit -m "Add GitHub Pages deploy workflow"
 git push
-🌍 Step 4 — Turn on GitHub Pages
-In your repo on GitHub:
+```
 
-Settings → Pages
+1. To turn on GitHub Pages, In your repo on GitHub:
 
-Set:
+Go to **Settings > Pages**, then set:
 
 Source = GitHub Actions
 
-Save.
-
-🚀 Done
-Your site will be live at:
-
+1. Your site will be live at:
+```
 https://YOUR_USERNAME.github.io/REPO_NAME/
-Every time you edit docs and push, it updates automatically.
-
-What’s happening behind the scenes
-
-https://docs.github.com/assets/cb-63715/images/help/actions/workflow-graph.png
-
-https://miro.medium.com/v2/resize%3Afit%3A1400/1%2A2_xZxwXOOOHN_vyLvsr4Mg.png
-
-https://media2.dev.to/dynamic/image/width%3D800%2Cheight%3D%2Cfit%3Dscale-down%2Cgravity%3Dauto%2Cformat%3Dauto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F9k8vq8yoo4b9uqur4idq.png
-4
-You write Markdown → MkDocs builds HTML → GitHub Actions deploys → GitHub Pages hosts.
-
-If you tell me:
-
-your repo name
-
-whether you use Material theme
-
-I’ll tailor the config exactly for your setup.
-
-
-You said:
-What should I do for the Owner dropdown? Should I create a new one or use my account name as is?
-
-ChatGPT said:
-Great question — this part trips a lot of people up 👍
-
-👉 Short answer
-Choose your own account name as the Owner. Don’t create a new one.
-
-🧠 What “Owner” actually means on GitHub
-The Owner is simply who controls the repository:
-
-Option	What it is	Do you need it?
-Your username	Your personal account	✅ Use this
-Organization	Shared team space	❌ Not needed unless you have a team/company
-Organizations are for companies, teams, or group projects. For a personal MkDocs site, your account is perfect.
-
-🌍 Why this matters for your site URL
-If Owner = your username, your site URL becomes:
-
-https://YOUR_USERNAME.github.io/REPO_NAME/
-If you created an organization, the URL would use that org name instead — unnecessary extra complexity.
-
-✅ So select:
-Owner → your GitHub username
-
-Then create the repo and continue with the setup we just did.
-
-Once you’ve created it, tell me the repo name and we’ll verify your final site URL 🔥
+```
 
 
 You said:
 OK. I created the repo. What should I do next once again?
 
 ChatGPT said:
-Cool — next you’ll (1) push your MkDocs project into that repo, then (2) enable GitHub Pages auto-deploy.
 
-1) Push your MkDocs project to the repo
+1. Push your MkDocs project to the repo
 On your computer, go into the folder that contains mkdocs.yml and run:
 
+```
 git init
 git add .
 git commit -m "Initial MkDocs site"
 git branch -M main
 git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
 git push -u origin main
-If you already ran git init before, skip it. If origin already exists, use:
+```
 
+If you already ran git init before, skip it.  
+If origin already exists, use:
+
+```
 git remote set-url origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
-2) Add a GitHub Actions workflow to publish the site
-Create a file:
+```
 
+1. To add a GitHub Actions workflow to publish the site:
+create a file:
+
+```
 .github/workflows/deploy.yml
-Paste this:
+```
 
+
+```
 name: Deploy MkDocs to GitHub Pages
 
 on:
@@ -386,44 +248,44 @@ jobs:
     steps:
       - name: Deploy
         uses: actions/deploy-pages@v4
-Commit + push:
+```
 
+1. Commit + push:
+
+```
 git add .github/workflows/deploy.yml
 git commit -m "Add GitHub Pages deployment workflow"
 git push
-3) Turn on GitHub Pages in repo settings
-In your repo on GitHub:
+```
 
-Settings → Pages → Source → GitHub Actions
+1. To turn on GitHub Pages in repo settings, In your repo on GitHub:  
+go to **Settings → Pages → Source → GitHub Actions**
 
-That’s it.
+4) Your site will be at:
 
-4) Find your live URL
-After the workflow finishes (Actions tab), your site will be at:
-
+```
 https://YOUR_USERNAME.github.io/YOUR_REPO/
-If you tell me your repo name (and whether you use mkdocs-material)
-I can give you the exact final URL and the exact pip install ... line to use.
+```
 
+```
+~/projects/docker/python/mkdocs$ git init
+```
 
-You said:
-kuroraiun@Daiv-001:~/projects/docker/python/mkdocs$ git init
-hint: Using 'master' as the name for the initial branch. This default branch name
-hint: is subject to change. To configure the initial branch name to use in all
-hint: of your new repositories, which will suppress this warning, call:
-hint: 
-hint:   git config --global init.defaultBranch <name>
-hint: 
-hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
-hint: 'development'. The just-created branch can be renamed via this command:
-hint: 
-hint:   git branch -m <name>
-Initialized empty Git repository in /home/kuroraiun/projects/docker/python/mkdocs/.git/
+```
+Using 'master' as the name for the initial branch.  
+This default branch name is subject to change.  
+To configure the initial branch name to use in all of your new repositories,   
+which will suppress this warning, call:  
+git config --global init.defaultBranch <name>  
+Names commonly chosen instead of 'master' are 'main', 'trunk' and 'development'.  
+The just-created branch can be renamed via this command:  
+git branch -m <name>  
+Initialized empty Git repository in /home/xxx/projects/docker/python/mkdocs/.git/
+```
 
 ChatGPT said:
-Perfect — that message just means Git started the repo using the old default branch name (master). We’ll switch it to main (what GitHub expects nowadays).
-
-You’re doing great — now just continue from here 👇
+Perfect — that message just means Git started the repo using the old default branch name (master). 
+We’ll switch it to main (what GitHub expects nowadays).
 
 ✅ Step 1 — Rename branch to main
 git branch -M main
@@ -4311,16 +4173,3 @@ It’s added to mkdocs.yml nav
 Those are two separate changes → often two commits.
 
 So what you asked is correct practice — especially as your KB grows.
-
-You’re basically learning proper Git workflow while building docs 💪
-
-Want to organize those Windows pages into categories next?
-
-
-Copy link
-
-X
-
-LinkedIn
-
-Reddit
