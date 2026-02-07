@@ -46,6 +46,10 @@ nav_en: &nav_en
         - 01-apps/windows/operations/remove-linked-pc.md
         - 01-apps/windows/operations/take-screenshot.md
   - Dev Notes:
+    - Git:
+      - Troubleshooting:
+        - 02-dev/git/troubleshooting/fix-default-blanch-name.md
+        - 02-dev/git/troubleshooting/fix-author-unknown.md
     - Docker:
       - 02-dev/docker/disable-scout-notifications.md
       - Troubleshooting:
@@ -63,6 +67,7 @@ nav_en: &nav_en
     - VS Code:
       - Operations:
         - 02-dev/vscode/operations/add-image-to-doc.md
+        - 02-dev/vscode/operations/connect-github.md
         - 02-dev/vscode/operations/open-linux-folder.md
         - 02-dev/vscode/operations/open-ubuntu.md
         - 02-dev/vscode/operations/preview-markdown.md

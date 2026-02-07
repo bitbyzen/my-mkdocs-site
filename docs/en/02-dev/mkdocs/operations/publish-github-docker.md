@@ -1,5 +1,19 @@
 # Docker
 
+1. Log into your GitHub account.
+
+2. Create a repository:  
+Go to **New repository**, then set:
+
+- **Repository name**: Anything
+- **Public/Private**: Public (needed for free Pages hosting)
+- **Initialize with README**: Leave unchecked
+- **Add .gitignore**: No need
+- **License**: No need
+- **Owner**: Use your accout name. You could probably create a new one if you want to use a different name in your website:  
+https://YOUR_USERNAME.github.io/REPO_NAME/
+
+
 1. Build the static site using your container.
 
     ```
@@ -7,96 +21,9 @@
     ```
 
 1. Commit your source (not site/) and push.
-
-    ```
-    git init
-    git add .
-    git commit -m "Add MkDocs site"
-    git branch -M main
-    git remote add origin https://github.com/<you>/<repo>.git
-    git push -u origin main
-    ```
-
-1. Deploy to GitHub Pages using GitHub Actions (recommended)
-
-    This avoids needing to run gh-deploy locally.
-
-    Create .github/workflows/deploy.yml:
-
-    ```
-    name: Deploy MkDocs to GitHub Pages
-
-    on:
-    push:
-        branches: [ "main" ]
-    workflow_dispatch:
-
-    permissions:
-    contents: read
-    pages: write
-    id-token: write
-
-    concurrency:
-    group: "pages"
-    cancel-in-progress: true
-
-    jobs:
-    build:
-        runs-on: ubuntu-latest
-        steps:
-        - uses: actions/checkout@v4
-
-        - name: Set up Python
-            uses: actions/setup-python@v5
-            with:
-            python-version: "3.x"
-
-        - name: Install MkDocs
-            run: |
-            pip install mkdocs mkdocs-material
-
-        - name: Build
-            run: mkdocs build
-
-        - name: Upload artifact
-            uses: actions/upload-pages-artifact@v3
-            with:
-            path: site
-
-    deploy:
-        environment:
-        name: github-pages
-        url: ${{ steps.deployment.outputs.page_url }}
-        runs-on: ubuntu-latest
-        needs: build
-        steps:
-        - name: Deploy to GitHub Pages
-            id: deployment
-            uses: actions/deploy-pages@v4
-    ```
-
-    !!! Note
-        If you don’t use mkdocs-material, remove it from the install line.
-
-1. Go to **Settings → Pages → Source = GitHub Actions**.
-
-
-
-1. Creat a GitHub account
-
-2. To create a repository:  
-go to **New repository**, then set:
-
-- **Repository name**: anything
-- **Public/Private**: Public (needed for free Pages hosting)
-- **Initialize with README**: leave unchecked
-- **Add .gitignore**: no
-- **License**: optional
-- **Owner**: use your accout name. You could probably create a new one if you want to use a different name in your website:  
-https://YOUR_USERNAME.github.io/REPO_NAME/
-
-
-3. To connect your local MkDocs project, in the project folder (the one with mkdocs.yml):
+3. Connect your local MkDocs project, in the project folder (the one with mkdocs.yml):
+1. Push your MkDocs project to the repo
+On your computer, go into the folder that contains mkdocs.yml and run:
 
 ```
 git init
@@ -106,99 +33,30 @@ git branch -M main
 git remote add origin https://github.com/YOUR_USERNAME/REPO_NAME.git
 git push -u origin main
 ```
-
-4. To set up automatic publishing,
-We’ll let GitHub build and publish the site every time you push.
-
-Create this file in your project:
-
-```
-.github/workflows/deploy.yml
-```
-
-
-```
-name: Deploy MkDocs
-
-on:
-  push:
-    branches: [ "main" ]
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-jobs:
-  build-deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: 3.x
-
-      - run: pip install mkdocs mkdocs-material
-      - run: mkdocs build
-
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: site
-
-      - uses: actions/deploy-pages@v4
-```
-
-Run:
-
-```
-git add .
-git commit -m "Add GitHub Pages deploy workflow"
-git push
-```
-
-1. To turn on GitHub Pages, In your repo on GitHub:
-
-Go to **Settings > Pages**, then set:
-
-Source = GitHub Actions
-
-1. Your site will be live at:
-```
-https://YOUR_USERNAME.github.io/REPO_NAME/
-```
-
-
-You said:
-OK. I created the repo. What should I do next once again?
-
-ChatGPT said:
-
-1. Push your MkDocs project to the repo
-On your computer, go into the folder that contains mkdocs.yml and run:
-
-```
-git init
-git add .
-git commit -m "Initial MkDocs site"
-git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
-git push -u origin main
-```
-
 If you already ran git init before, skip it.  
 If origin already exists, use:
 
 ```
 git remote set-url origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
 ```
+If it asks for login:
+- Username = your GitHub username
+- Password = your GitHub Personal Access Token (not your account password)
 
+1. Deploy to GitHub Pages using GitHub Actions (recommended)
+
+    This avoids needing to run gh-deploy locally.
+    4. To set up automatic publishing,
+We’ll let GitHub build and publish the site every time you push.
+Create this file in your project:
 1. To add a GitHub Actions workflow to publish the site:
 create a file:
 
 ```
 .github/workflows/deploy.yml
 ```
+
+
 
 
 ```
@@ -250,6 +108,10 @@ jobs:
         uses: actions/deploy-pages@v4
 ```
 
+    !!! Note
+        If you don’t use mkdocs-material, remove it from the install line.
+
+
 1. Commit + push:
 
 ```
@@ -258,171 +120,64 @@ git commit -m "Add GitHub Pages deployment workflow"
 git push
 ```
 
-1. To turn on GitHub Pages in repo settings, In your repo on GitHub:  
-go to **Settings → Pages → Source → GitHub Actions**
+```
+git add .
+git commit -m "Add GitHub Pages deploy workflow"
+git push
+```
 
-4) Your site will be at:
 
+1. Turn on GitHub Pages, In your repo on GitHub:
+
+Go to **Settings > Pages**, then set:
+
+Source = GitHub Actions
+
+1. Your site will be live at:
 ```
 https://YOUR_USERNAME.github.io/YOUR_REPO/
 ```
-
-```
-~/projects/docker/python/mkdocs$ git init
-```
-
-```
-Using 'master' as the name for the initial branch.  
-This default branch name is subject to change.  
-To configure the initial branch name to use in all of your new repositories,   
-which will suppress this warning, call:  
-git config --global init.defaultBranch <name>  
-Names commonly chosen instead of 'master' are 'main', 'trunk' and 'development'.  
-The just-created branch can be renamed via this command:  
-git branch -m <name>  
-Initialized empty Git repository in /home/xxx/projects/docker/python/mkdocs/.git/
-```
-
-ChatGPT said:
-Perfect — that message just means Git started the repo using the old default branch name (master). 
-We’ll switch it to main (what GitHub expects nowadays).
-
-✅ Step 1 — Rename branch to main
-git branch -M main
-✅ Step 2 — Add your files
-git add .
-✅ Step 3 — Make your first commit
-git commit -m "Initial MkDocs site"
-✅ Step 4 — Connect to your GitHub repo
-Replace with your real values:
-
-git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
-✅ Step 5 — Push to GitHub
-git push -u origin main
-If it asks for login:
-
-Username = your GitHub username
-
-Password = your GitHub Personal Access Token (not your account password)
-
-What just happened
-
-https://miro.medium.com/1%2AeGdNATA_BGQcA1xUvc9Irg.png
-
-https://www.git-tower.com/learn/media/pages/git/ebook/en/command-line/remote-repositories/introduction/ca91d7d832-1768495146/basic-remote-workflow.png
-
-https://miro.medium.com/1%2AyHKzz1RaeLxtnDnnLcJVnA.jpeg
-4
-Your computer → sends code → GitHub repo.
-
-After this succeeds, tell me “pushed” and we’ll flip the switch to make your site live 🌍🚀
-
-
-You said:
-kuroraiun@Daiv-001:~/projects/docker/python/mkdocs$ git commit -m "Initial MkDocs site"
-Author identity unknown
-
-*** Please tell me who you are.
-
-Run
-
-  git config --global user.email "you@example.com"
-  git config --global user.name "Your Name"
-
-to set your account's default identity.
-Omit --global to set the identity only in this repository.
-
-fatal: empty ident name (for <kuroraiun@Daiv-001.localdomain>) not allowed
-
-ChatGPT said:
-Ahhh yep — totally normal first-time Git setup thing 👍
-Git just doesn’t know who you are yet.
-
-Let’s fix that in 10 seconds.
-
-✅ Set your Git identity (one time only)
-Run:
-
-git config --global user.name "Your Name"
-git config --global user.email "your_email@example.com"
-Use:
-
-Name → anything (usually your real name)
-
-Email → the same email you used on GitHub
-
-Example:
-
-git config --global user.name "Alex Tanaka"
-git config --global user.email "alex@email.com"
-This just labels your commits — it doesn’t expose passwords or anything.
-
-🔁 Now retry the commit
-git commit -m "Initial MkDocs site"
-It should work now 🎉
-
-After it succeeds, continue with:
-git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
-git push -u origin main
-You’re like 2 commands away from your site being live.
-Tell me what message you get after the commit 👌
 
 
 You said:
 Uploaded image
 This message appeared.
+```
+Visual Studio Code  
+The extension 'GitHub' wants to sign in using GitHub.
+```
 
 ChatGPT said:
-That popup is totally normal 👍
-It’s just Visual Studio Code asking permission to let the GitHub extension connect your editor to GitHub.
+Click **Allow**.
 
-✅ You should click Allow
-Nothing shady — it just means:
-
+Note:  
+It means:  
 VS Code → opens browser → you log into GitHub → VS Code gets permission to:
 
-push code
-
-pull code
-
-manage repos
+- push code
+- pull code
+- manage repos
 
 It saves you from typing tokens manually.
 
 What will happen next
-Your browser opens
+1. Your browser opens
+1. GitHub asks to authorize VS Code
+1. Click Authorize
+1. Done
+1. After that, your git push will work without asking for passwords.
 
-GitHub asks to authorize VS Code
-
-Click Authorize
-
-Done 🎉
-
-After that, your git push will work without asking for passwords.
-
-If you hit "Cancel"
-No disaster — you’d just need to use a Personal Access Token manually instead.
-
-So go ahead and Allow 👌
 Then run again:
-
+```
 git push -u origin main
-Tell me what message you see next — we’re almost at launch 🚀
-
+```
 
 You said:
+```
 kuroraiun@Daiv-001:~/projects/docker/python/mkdocs$ git push -u origin main
 Branch 'main' set up to track remote branch 'main' from 'origin'.
 Everything up-to-date
-
-ChatGPT said:
-LET’S GOOOOO 🎉🔥
-That message means your project is successfully on GitHub. You did the Git part perfectly.
-
-Now we just flip the publishing switch.
-
-🚀 Next Step — Make the site go live
-Right now your code is stored, but not published.
+```
 
 1️⃣ Add the auto-deploy file
 Inside your project folder, create this path:
