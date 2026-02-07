@@ -85,7 +85,7 @@ nav_ja: &nav_ja
     - Claude:
       - 01-apps/claude/login.md
     - Notepad++:
-      - 01-apps/notepad++/troubleshooting/protect-yourself.md
+      - 01-apps/notepadpp/troubleshooting/protect-yourself.md
     - Outlook:
       - 01-apps/outlook/disable-forwarding.md
   - 開発メモ:
