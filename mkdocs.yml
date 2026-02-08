@@ -65,12 +65,14 @@ nav_en: &nav_en
       - Operations:
         - 02-dev/mkdocs/operations/add-copyrightfooter.md
         - 02-dev/mkdocs/operations/add-table.md
-        - 02-dev/mkdocs/operations/packages.md
+        - 02-dev/mkdocs/operations/confirm-css.md
         - 02-dev/mkdocs/operations/publish-github.md
       - Troubleshooting:
         - 02-dev/mkdocs/troubleshooting/get-http.md
         - 02-dev/mkdocs/troubleshooting/get-sitemap.md
         - 02-dev/mkdocs/troubleshooting/not-included-in-nav.md
+      - Reference:
+        - 02-dev/mkdocs/reference/packages.md
     - VS Code:
       - Operations:
         - 02-dev/vscode/operations/add-image-to-doc.md
