@@ -54,9 +54,13 @@ nav_en: &nav_en
         - 02-dev/git/troubleshooting/fix-default-blanch-name.md
         - 02-dev/git/troubleshooting/fix-author-unknown.md
     - Docker:
-      - 02-dev/docker/disable-scout-notifications.md
+      - Operations:
+        - 02-dev/docker/operations/disable-scout-notifications.md
       - Troubleshooting:
         - 02-dev/docker/troubleshooting/troubleshoot01.md
+    - Linux:
+      - Operations:
+        - 02-dev/linux/operations/use-nano-editor.md
     - MkDocs:
       - Operations:
         - 02-dev/mkdocs/operations/add-copyrightfooter.md
