@@ -1,4 +1,4 @@
-# Update the website
+# Update the website without Docker
 
 ```bash title="terminal"
 git add .

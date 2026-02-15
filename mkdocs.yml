@@ -70,6 +70,7 @@ nav_en: &nav_en
         - 02-dev/mkdocs/operations/add-table.md
         - 02-dev/mkdocs/operations/confirm-css.md
         - 02-dev/mkdocs/operations/publish-github.md
+        - 02-dev/mkdocs/operations/publish-docker-mkdocs-github01.md
       - Troubleshooting:
         - 02-dev/mkdocs/troubleshooting/get-http.md
         - 02-dev/mkdocs/troubleshooting/get-sitemap.md
