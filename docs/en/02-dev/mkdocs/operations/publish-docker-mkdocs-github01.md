@@ -139,6 +139,7 @@ This guide assumes you build and preview MkDocs **inside Docker**, and publish t
       git commit -m "Add GitHub Pages deployment workflow"
       git push
       ```
+
 5. Open the **Actions** tab and confirm that the workflow completes successfully (green ✅).
 
     ![Screenshot](00-images/publish-docker-mkdocs-github07.png)
