@@ -69,14 +69,17 @@ nav_en: &nav_en
         - 02-dev/mkdocs/operations/add-copyrightfooter.md
         - 02-dev/mkdocs/operations/add-table.md
         - 02-dev/mkdocs/operations/confirm-css.md
+        - 02-dev/mkdocs/operations/create-bilingual-site.md
         - 02-dev/mkdocs/operations/gh-deploy.md
         - 02-dev/mkdocs/operations/publish-github.md
-        - 02-dev/mkdocs/operations/publish-docker-mkdocs-github01.md
+        - 02-dev/mkdocs/operations/publish-docker-github-site.md
+        - 02-dev/mkdocs/operations/update-docker-github-site.md
       - Troubleshooting:
         - 02-dev/mkdocs/troubleshooting/get-http.md
         - 02-dev/mkdocs/troubleshooting/get-sitemap.md
         - 02-dev/mkdocs/troubleshooting/not-included-in-nav.md
       - Reference:
+        - 02-dev/mkdocs/reference/docker-run-command.md
         - 02-dev/mkdocs/reference/packages.md
     - VS Code:
       - Operations:
