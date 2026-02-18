@@ -17,4 +17,4 @@
 
 6. Click **Create**.
 
-    ![Screenshot](create-project-01.png)
+    ![Screenshot](create-project01.png)

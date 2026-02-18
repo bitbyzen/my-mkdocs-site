@@ -23,7 +23,7 @@ nav_en: &nav_en
     - Any apps:
       - Operations:
         - 01-apps/00-apps/operations/change-fileextensions.md
-        - 01-apps/00-apps/operations/create-window-layout/create-window-layout.md
+        - 01-apps/00-apps/operations/create-window-layout.md
     - Blender:
       - Operations:
         - 01-apps/blender/operation/render-slideshow.md
@@ -48,8 +48,8 @@ nav_en: &nav_en
         - 01-apps/uniconverter/operations/update-uniconverter.md
     - Unreal Engine:
       - Operations:
-        - 01-apps/unrealengine/operations/create-project/create-project.md
-        - 01-apps/unrealengine/operations/delete-project/delete-project.md
+        - 01-apps/unrealengine/operations/create-project.md
+        - 01-apps/unrealengine/operations/delete-project.md
         - 01-apps/unrealengine/operations/navigate-viewport.md
         - 01-apps/unrealengine/operations/reset-viewport-view.md
     - Windows:
