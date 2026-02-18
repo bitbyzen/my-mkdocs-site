@@ -48,10 +48,15 @@ nav_en: &nav_en
         - 01-apps/uniconverter/operations/update-uniconverter.md
     - Unreal Engine:
       - Operations:
+        - 01-apps/unrealengine/operations/change-camera-speed.md
         - 01-apps/unrealengine/operations/create-project.md
         - 01-apps/unrealengine/operations/delete-project.md
+        - 01-apps/unrealengine/operations/focus-object.md
+        - 01-apps/unrealengine/operations/move-third-person-actor.md
         - 01-apps/unrealengine/operations/navigate-viewport.md
+        - 01-apps/unrealengine/operations/orbit-around-object.md
         - 01-apps/unrealengine/operations/reset-viewport-view.md
+        - 01-apps/unrealengine/operations/zoom.md
     - Windows:
       - Operations:
         - 01-apps/windows/operations/change-email.md

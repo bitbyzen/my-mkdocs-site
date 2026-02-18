@@ -36,15 +36,6 @@ Hold the **right mouse button**, then use:
 
 ---
 
-## Focus on an object
-
-1. Select an object in the Viewport or Outliner.
-2. Press **F**.
-
-The camera moves to the selected object.
-
----
-
 ## Move while holding middle mouse button (optional)
 
 Hold the **middle mouse button**, then move the mouse.
