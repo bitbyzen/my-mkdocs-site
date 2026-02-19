@@ -90,4 +90,4 @@
         - stylesheets/tabs-ja.css
       ```
 
-以上
+---

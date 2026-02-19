@@ -87,6 +87,7 @@ nav_en: &nav_en
         - 02-dev/mkdocs/operations/create-bilingual-site.md
         - 02-dev/mkdocs/operations/create-tab-open-link.md
         - 02-dev/mkdocs/operations/gh-deploy.md
+        - 02-dev/mkdocs/operations/navigate-to-repo-root.md
         - 02-dev/mkdocs/operations/publish-github.md
         - 02-dev/mkdocs/operations/publish-docker-github-site.md
         - 02-dev/mkdocs/operations/update-docker-github-site.md
@@ -143,6 +144,8 @@ nav_ja: &nav_ja
       - 02-dev/linux/open-ubuntu.md
     - MkDocs:
       - 02-dev/mkdocs/create-bi-web.md
+    - Xserver:
+      - 02-dev/xserver/manage-service.md
   - ビジネスメモ:
     - 03-business/mynumber/use-mynumberhealthcard.md
   - 言語メモ:

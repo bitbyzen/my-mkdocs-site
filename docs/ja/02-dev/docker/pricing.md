@@ -5,4 +5,4 @@
 
 料金プラン（公式サイト）: https://www.docker.com/ja-jp/pricing/
 
-以上
+---

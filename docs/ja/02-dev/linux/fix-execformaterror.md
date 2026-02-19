@@ -23,4 +23,4 @@ cannot execute binary file: Exec format error
     ```
 1. VS Codeを再起動する。
 
-以上
+---

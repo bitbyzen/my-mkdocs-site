@@ -19,4 +19,4 @@
 ### アプリリストから起動する場合
 ![alt text](images/open-ubuntu03.png)
 
- 以上
+---
