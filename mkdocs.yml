@@ -30,6 +30,12 @@ nav_en: &nav_en
     - GIMP:
       - Operations:
         - 01-apps/gimp/operations/convert-crw-to-png.md
+    - Google Chrome:
+      - Operations:
+        - 01-apps/google-chrome/open-new-google-page.md
+    - Google Drive:
+      - Operations:
+        - 01-apps/google-drive/operations/edit-with-notepad-pp.md
     - memoQ:
       - Operations:
         - 01-apps/memoq/operations/update-address.md
